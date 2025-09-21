@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 
 public class Sudoku {
@@ -47,6 +48,10 @@ public class Sudoku {
     JPanel boardPanel = new JPanel();
     JPanel buttonsPanel = new JPanel();
 
+    JButton numSelected = null;
+    int errors = 0;
+    int squaresLeft = 0; 
+
     Sudoku() {
 
         
@@ -85,6 +90,7 @@ public class Sudoku {
                     tile.setText(String.valueOf(tileChar));
                     tile.setBackground(Color.lightGray);
                 } else {
+                    squaresLeft++;
                     tile.setFont(new Font("Ariel", Font.PLAIN, 20));
                     tile.setBackground(Color.white);
                 }
@@ -103,6 +109,33 @@ public class Sudoku {
                 }
                 tile.setFocusable(false);
                 boardPanel.add(tile);
+
+                tile.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        Tile tile = (Tile) e.getSource();
+                        int r = tile.rowNum;
+                        int c = tile.colNum;
+                        if (numSelected != null) {
+                            //if number already placed
+                            if (tile.getText() != "") {
+                                return;
+                            }
+
+                            //compare number selected against correct number
+                            String numSelectedText = numSelected.getText();
+                            if (solution[r].charAt(c) == numSelectedText.charAt(0)) {
+                                tile.setText(numSelectedText);
+                                squaresLeft--;
+                                if (squaresLeft == 0) {
+                                    textLabel.setText("Congratulations! Solved with " + errors + " errors.");
+                                }
+                            } else {
+                                errors += 1;
+                                textLabel.setText("Sudoku: " + errors);
+                            }
+                        }
+                    }
+                });
             }
         }
     }
@@ -117,6 +150,17 @@ public class Sudoku {
             button.setFocusable(false);
             button.setBackground(Color.white);
             buttonsPanel.add(button);
+
+            button.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    JButton button = (JButton) e.getSource();
+                    if (numSelected != null) {
+                        numSelected.setBackground(Color.white);
+                    }
+                    numSelected = button;
+                    numSelected.setBackground(Color.lightGray);
+                }
+            });
         }
     }
     
