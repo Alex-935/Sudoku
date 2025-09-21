@@ -45,6 +45,7 @@ public class Sudoku {
     JLabel textLabel = new JLabel();
     JPanel textPanel = new JPanel();
     JPanel boardPanel = new JPanel();
+    JPanel buttonsPanel = new JPanel();
 
     Sudoku() {
 
@@ -65,6 +66,10 @@ public class Sudoku {
         boardPanel.setLayout(new GridLayout(9, 9));
         setupTiles();
         frame.add(boardPanel, BorderLayout.CENTER);
+
+        buttonsPanel.setLayout(new GridLayout(1, 9));
+        setupButtons();
+        frame.add(buttonsPanel, BorderLayout.SOUTH);
 
         frame.setVisible(true);
     }
@@ -99,6 +104,19 @@ public class Sudoku {
                 tile.setFocusable(false);
                 boardPanel.add(tile);
             }
+        }
+    }
+
+    void setupButtons() {
+
+        for (int c = 1; c < 10; c++) {
+            //Tile button = new Tile(0, c - 1);
+            JButton button = new JButton();
+            button.setFont(new Font("Arial", Font.BOLD, 20));
+            button.setText(String.valueOf(c));
+            button.setFocusable(false);
+            button.setBackground(Color.white);
+            buttonsPanel.add(button);
         }
     }
     
