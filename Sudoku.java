@@ -48,7 +48,7 @@ public class Sudoku {
 
     Sudoku() {
 
-        frame.setVisible(true);
+        
         frame.setSize(boardWidth, boardHeight);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,6 +65,8 @@ public class Sudoku {
         boardPanel.setLayout(new GridLayout(9, 9));
         setupTiles();
         frame.add(boardPanel, BorderLayout.CENTER);
+
+        frame.setVisible(true);
     }
 
     void setupTiles() {
@@ -73,7 +75,27 @@ public class Sudoku {
             for (int c = 0; c < 9; c++) {
                 Tile tile = new Tile(r, c);
                 char tileChar = puzzle[r].charAt(c);
-                tile.setText(String.valueOf(tileChar));
+                if (tileChar != '-') {
+                    tile.setFont(new Font("Arial", Font.BOLD, 20));   
+                    tile.setText(String.valueOf(tileChar));
+                    tile.setBackground(Color.lightGray);
+                } else {
+                    tile.setFont(new Font("Ariel", Font.PLAIN, 20));
+                    tile.setBackground(Color.white);
+                }
+                
+                if (r == 2 && c == 2 || r == 2 && c == 5 || r == 5 && c == 2 || r == 5 && c == 5) {
+                    tile.setBorder(BorderFactory.createMatteBorder(1, 1, 5, 5, Color.black));
+                }
+                else if (r == 2 || r == 5) {
+                    tile.setBorder(BorderFactory.createMatteBorder(1, 1, 5, 1,  Color.black));
+                }
+                else if (c == 2 || c == 5) {
+                    tile.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 5, Color.black));
+                }
+                else {
+                    tile.setBorder(BorderFactory.createLineBorder(Color.black));
+                }
                 tile.setFocusable(false);
                 boardPanel.add(tile);
             }
